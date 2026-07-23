@@ -1,9 +1,9 @@
 # SisGI - Sistema de Geração de Incidentes
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PHP Version](https://img.shields.io/badge/PHP-%3E%3D%キャラクター-blue.svg)](https://php.net/)
+[![PHP Version](https://img.shields.io/badge/PHP-blue.svg)](https://php.net/)
 
-O **SisGI** é uma ferramenta web leve, rápida e minimalista desenvolvida em **PHP puro** e **SQLite**, criada com o objetivo de realizar injeção controlada de incidentes operacionais, simulações de terreno e avaliação de tempo de resposta em tempo real.
+O **SisGI - Sistema de Geração de Incidentes** é uma aplicação web projetada para auxiliar na simulação e gerenciamento de incidentes em tempo real. Esta aplicação foi desenvolvida pelo Capitão de Comunicações Barbosa Oliveira, no 6º Batalhão de Comunicações, com o objetivo de apoiar as instruções práticas do período de qualificação e adestramento em Organizações Militares do Exército Brasileiro, mas pode ser utilizado livremente por outras organizações e empresas.
 
 ---
 
@@ -32,9 +32,9 @@ Como o sistema foi desenhado para ser enxuto e pragmático, os requisitos são m
    ```bash
    git clone [https://github.com/Jonny-Marcos/SisGI.git](https://github.com/Jonny-Marcos/SisGI.git)
 
-   Certifique-se de que a pasta onde o arquivo index.php está localizado possui permissões de escrita para que o SQLite possa criar e atualizar o arquivo do banco de dados automaticamente.
+2. Certifique-se de que a pasta onde o arquivo index.php está localizado possui permissões de escrita para que o SQLite possa criar e atualizar o arquivo do banco de dados automaticamente.
 
-2. Acesse o sistema pelo navegador. Na primeira execução, as tabelas e estruturas padrão serão configuradas.
+3. Acesse o sistema pelo navegador. Na primeira execução, as tabelas e estruturas padrão serão configuradas.
 
 ---
 
