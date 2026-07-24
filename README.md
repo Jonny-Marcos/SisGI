@@ -34,7 +34,7 @@ Como o sistema foi desenhado para ser enxuto e pragmático, os requisitos são m
 
 2. Certifique-se de que a pasta onde o arquivo index.php está localizado possui permissões de escrita para que o SQLite possa criar e atualizar o arquivo do banco de dados automaticamente.
 
-3. Acesse o sistema pelo navegador. Na primeira execução, as tabelas e estruturas padrão serão configuradas.
+3. Acesse a página setup.php pelo navegador. Na primeira execução, as tabelas e estruturas padrão serão configuradas.
 
 ---
 
