@@ -322,7 +322,7 @@ if ($view === 'telao'):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telão de Incidentes - Direção de Exercício</title>
+    <title>Dashboard de Incidentes - Direção de Exercício</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/all.min.css">
     <script>
@@ -414,8 +414,8 @@ endif;
             
             <div class="flex items-center gap-4">
                 <?php if ($cenarioAtivo): ?>
-                    <a href="index.php?view=telao" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-xs font-bold py-1 px-3 rounded flex items-center transition" title="Abrir telão para instruendos">
-                        <i class="fa-solid fa-display mr-2 text-blue-400"></i> Telão Instruendo
+                    <a href="index.php?view=telao" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-xs font-bold py-1 px-3 rounded flex items-center transition" title="Abrir dashboard para instruendos">
+                        <i class="fa-solid fa-display mr-2 text-blue-400"></i> Dashboard dos Instruendos
                     </a>
                     
                     <span class="text-sm text-slate-400 ml-2 border-l border-slate-700 pl-4">Cenário Ativo:</span>
@@ -442,16 +442,16 @@ endif;
                     <i class="fa-solid fa-gauge mr-2"></i> Painel de Controle
                 </button>
                 <button onclick="showTab('tab-locais')" id="btn-tab-locais" class="text-left px-4 py-2 rounded font-medium text-slate-600 hover:bg-slate-200 transition-colors">
-                    <i class="fa-solid fa-map-location-dot mr-2"></i> Gestão de Locais
+                    <i class="fa-solid fa-map-location-dot mr-2"></i> Locais
                 </button>
                 <button onclick="showTab('tab-templates')" id="btn-tab-templates" class="text-left px-4 py-2 rounded font-medium text-slate-600 hover:bg-slate-200 transition-colors">
-                    <i class="fa-solid fa-list-check mr-2"></i> Catálogo Barema
+                    <i class="fa-solid fa-list-check mr-2"></i> Incidentes
                 </button>
                 <button onclick="showTab('tab-relatorio')" id="btn-tab-relatorio" class="text-left px-4 py-2 rounded font-medium text-slate-600 hover:bg-slate-200 transition-colors">
-                    <i class="fa-solid fa-chart-line mr-2"></i> Relatório Avançado
+                    <i class="fa-solid fa-chart-line mr-2"></i> Relatório
                 </button>
                 <button onclick="showTab('tab-cenarios')" id="btn-tab-cenarios" class="text-left px-4 py-2 rounded font-medium text-slate-600 hover:bg-slate-200 transition-colors mt-6 border-t border-slate-200 pt-4">
-                    <i class="fa-solid fa-folder-tree mr-2"></i> Mudar Cenário
+                    <i class="fa-solid fa-folder-tree mr-2"></i> Cenários
                 </button>
             </nav>
         </aside>
@@ -516,7 +516,7 @@ endif;
                                             <div class="flex items-center justify-between bg-white p-2 rounded border text-sm hover:bg-slate-50 transition">
                                                 <span class="font-medium text-slate-700 text-xs w-28 truncate" title="<?= htmlspecialchars($catName) ?>"><?= htmlspecialchars($catName) ?></span>
                                                 <div class="flex items-center gap-2">
-                                                    <span class="text-[10px] text-slate-400 ml-1">Int:</span>
+                                                    <span class="text-[10px] text-slate-400 ml-1">Intervalo (min):</span>
                                                     <input type="number" id="int_<?= $l['id'] ?>_<?= md5($catName) ?>" value="<?= $genInterval ?>" min="1" class="w-12 p-0.5 border rounded text-xs text-center focus:ring-1 focus:ring-blue-500" onchange="toggleCategoryGenerator(<?= $l['id'] ?>, '<?= addslashes($catName) ?>', document.getElementById('chk_<?= $l['id'] ?>_<?= md5($catName) ?>').checked, this.value)">
                                                     <label class="relative inline-flex items-center cursor-pointer ml-1">
                                                         <input type="checkbox" id="chk_<?= $l['id'] ?>_<?= md5($catName) ?>" class="sr-only peer" onchange="toggleCategoryGenerator(<?= $l['id'] ?>, '<?= addslashes($catName) ?>', this.checked, document.getElementById('int_<?= $l['id'] ?>_<?= md5($catName) ?>').value)" <?= $isGenActive ? 'checked' : '' ?>>
@@ -585,7 +585,7 @@ endif;
                                             </div>
                                             <h4 class="font-bold text-lg text-slate-800"><i class="fa-solid <?= htmlspecialchars($inc['icone_fa']) ?> mr-1"></i> <?= htmlspecialchars($inc['titulo']) ?></h4>
                                             <p class="text-slate-600 mt-2 text-sm"><strong>Cenário:</strong> <?= htmlspecialchars($inc['descricao']) ?></p>
-                                            <p class="text-slate-600 text-sm mt-1"><strong>Ação Esperada (Barema):</strong> <?= htmlspecialchars($inc['acao_esperada']) ?></p>
+                                            <p class="text-slate-600 text-sm mt-1"><strong>Ação Esperada:</strong> <?= htmlspecialchars($inc['acao_esperada']) ?></p>
                                         </div>
                                     </div>
                                     <div class="md:w-64 bg-slate-50 p-3 rounded border flex flex-col justify-center shrink-0">
@@ -617,7 +617,7 @@ endif;
                         <input type="hidden" name="action" value="add_local">
                         <div class="flex-1">
                             <label class="block text-sm font-bold text-slate-700 mb-1">Nome do Posto/Local</label>
-                            <input type="text" name="nome" required placeholder="Ex: PPM (8ª Cia Com)" class="w-full p-2 border rounded">
+                            <input type="text" name="nome" required placeholder="Ex: Posto Rádio" class="w-full p-2 border rounded">
                         </div>
                         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"><i class="fa-solid fa-plus mr-1"></i> Adicionar Local</button>
                     </form>
@@ -653,7 +653,7 @@ endif;
 
             <!-- CATÁLOGO BAREMA -->
             <section id="tab-templates" class="tab-content">
-                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Catálogo de Incidentes (Barema)</h2>
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Catálogo de Incidentes</h2>
                 
                 <!-- Gestão de Categorias -->
                 <div class="bg-white p-4 rounded shadow border mb-6">
@@ -711,7 +711,7 @@ endif;
                         <textarea name="descricao" required rows="2" class="w-full p-2 border rounded outline-none"></textarea>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Ação Esperada (Critério do Barema)</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Ação Esperada</label>
                         <input type="text" name="acao_esperada" required class="w-full p-2 border rounded outline-none">
                     </div>
                     <div class="mb-5">
@@ -723,10 +723,10 @@ endif;
                                 'fa-walkie-talkie', 'fa-headset', 'fa-satellite-dish', 'fa-tower-broadcast', 'fa-network-wired', 
                                 'fa-laptop-code', 'fa-envelope', 'fa-phone', 'fa-shield-halved', 'fa-lock', 'fa-key',
                                 'fa-kit-medical', 'fa-heart-pulse', 'fa-truck-medical', 'fa-bed-pulse', 'fa-suitcase-medical', 'fa-hospital', 'fa-droplet',
-                                'fa-wrench', 'fa-bolt', 'fa-fire-extinguisher', 'fa-car-side', 'fa-truck-fast', 'fa-truck-convoy',
+                                'fa-wrench', 'fa-bolt', 'fa-fire-extinguisher', 'fa-car-side', 'fa-truck-fast',
                                 'fa-boxes-packing', 'fa-bowl-food', 'fa-pump-soap', 'fa-toolbox', 'fa-gun', 'fa-person-rifle',
                                 'fa-triangle-exclamation', 'fa-users', 'fa-user-secret', 'fa-land-mine-on', 'fa-magnifying-glass', 
-                                'fa-file-lines', 'fa-book', 'fa-map', 'fa-mountain', 'fa-rope', 'fa-camera', 'fa-person-falling-burst'
+                                'fa-file-lines', 'fa-book', 'fa-map', 'fa-mountain', 'fa-camera', 'fa-person-falling-burst'
                             ];
                             foreach($icons as $ic): ?>
                                 <button type="button" class="icon-select-btn flex items-center justify-center h-12 w-full rounded border text-slate-600 hover:bg-blue-100 hover:text-blue-600 transition <?= $ic == 'fa-triangle-exclamation' ? 'bg-blue-100 border-blue-500 text-blue-700 ring-2 ring-blue-500' : 'bg-white border-slate-200' ?>" data-icon="<?= $ic ?>" onclick="selectIcon('<?= $ic ?>')">
@@ -814,7 +814,7 @@ endif;
 
             <!-- RELATÓRIO AVANÇADO -->
             <section id="tab-relatorio" class="tab-content">
-                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Relatório Avançado: <?= $cenarioAtivo ? htmlspecialchars($cenarioAtivo['nome']) : '' ?></h2>
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 border-b pb-2">Relatório: <?= $cenarioAtivo ? htmlspecialchars($cenarioAtivo['nome']) : '' ?></h2>
                 <?php if ($cenarioAtivo): ?>
                     
                     <div class="bg-white p-4 rounded shadow border mb-6 flex gap-4 items-center">
@@ -1047,6 +1047,11 @@ endif;
             </section>
         </main>
     </div>
+    
+    <footer class="text-center py-4 text-xs text-slate-500 mt-auto border-t border-slate-200 w-full bg-slate-100">
+        <a href="https://github.com/Jonny-Marcos/SisGI/" target="_blank" class="font-bold text-blue-600 hover:text-blue-800 transition">SisGI</a> | 
+        Desenvolvido por <a href="https://www.linkedin.com/in/joao-marcos-barbosa-oliveira-8b866a175/" target="_blank" class="font-bold text-blue-600 hover:text-blue-800 transition">Cap Barbosa Oliveira</a>
+    </footer>
 
     <script>
         // Limpar query string ?msg=
