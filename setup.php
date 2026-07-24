@@ -11,7 +11,7 @@ try {
     $mensagemSistema = "";
 
     if (!$bancoJaExiste) {
-        // 1. CRIAÇÃO DAS TABELAS MODULARES
+        // 1. CRIAÇÃO DAS TABELAS MODULARES COMPLETAS
         $db->exec("
             -- Tabela de Cenários (Permite reabrir históricos)
             CREATE TABLE IF NOT EXISTS cenarios (
@@ -27,10 +27,24 @@ try {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 cenario_id INTEGER NOT NULL,
                 nome TEXT NOT NULL,
-                gerador_ativo INTEGER DEFAULT 0, -- 0 (Inativo), 1 (Ativo)
-                intervalo_minutos INTEGER DEFAULT 5,
                 criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY(cenario_id) REFERENCES cenarios(id) ON DELETE CASCADE
+            );
+
+            -- Tabela de Categorias
+            CREATE TABLE IF NOT EXISTS categorias (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT UNIQUE NOT NULL
+            );
+
+            -- Tabela de Geradores Automáticos (Configuração de tempo por Categoria em cada Local)
+            CREATE TABLE IF NOT EXISTS local_geradores (
+                local_id INTEGER NOT NULL,
+                categoria TEXT NOT NULL,
+                gerador_ativo INTEGER DEFAULT 0,
+                intervalo_minutos INTEGER DEFAULT 5,
+                PRIMARY KEY (local_id, categoria),
+                FOREIGN KEY(local_id) REFERENCES locais(id) ON DELETE CASCADE
             );
 
             -- Tabela de Templates (Catálogo de Incidentes baseados no Barema)
@@ -51,6 +65,7 @@ try {
                 status TEXT DEFAULT 'PENDENTE', -- 'PENDENTE', 'RESOLVIDO'
                 resultado_barema TEXT DEFAULT 'N/A', -- 'SIM', 'NÃO', 'OBS', 'N/A'
                 observacao_barema TEXT,
+                resolvido_em DATETIME,
                 criado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY(template_id) REFERENCES templates_incidentes(id),
                 FOREIGN KEY(local_id) REFERENCES locais(id) ON DELETE CASCADE
@@ -59,17 +74,22 @@ try {
 
         // 2. INSERÇÃO DE DADOS INICIAIS (SEED)
         
+        // Criar as Categorias Iniciais
+        $stmtCat = $db->prepare("INSERT INTO categorias (nome) VALUES (?)");
+        $categoriasBase = ['C2', 'Comunicações', 'Saúde', 'Logística', 'GLO'];
+        foreach ($categoriasBase as $cat) {
+            $stmtCat->execute([$cat]);
+        }
+        
         // Criar o Cenário Inicial baseado na Ordem de Instrução
         $stmtCenario = $db->prepare("INSERT INTO cenarios (nome, descricao) VALUES (?, ?)");
-        $stmtCenario->execute(['Campo da IIQ e Op Estb', 'Exercício de Qualificação - Julho 2026']);
+        $stmtCenario->execute(['Campo da IIQ e Op Estb', 'Exercício de Qualificação']);
         $cenarioId = $db->lastInsertId();
 
         // Criar Locais previstos no QTS vinculados ao Cenário
-        $stmtLocal = $db->prepare("INSERT INTO locais (cenario_id, nome, gerador_ativo, intervalo_minutos) VALUES (?, ?, ?, ?)");
-        $stmtLocal->execute([$cenarioId, 'SEF (6º B Com)', 0, 5]);
-        $stmtLocal->execute([$cenarioId, 'PPM (8ª Cia Com)', 0, 5]);
-        $stmtLocal->execute([$cenarioId, 'Centro de Mensagens', 0, 10]);
-        $stmtLocal->execute([$cenarioId, 'Reserva de Armamento', 0, 15]);
+        $stmtLocal = $db->prepare("INSERT INTO locais (cenario_id, nome) VALUES (?, ?)");
+        $stmtLocal->execute([$cenarioId, 'Posto de Bloqueio']);
+        $stmtLocal->execute([$cenarioId, 'Centro de Comunicações']);
 
         // Criar Templates baseados no Barema
         $stmtTemplate = $db->prepare("INSERT INTO templates_incidentes (titulo, categoria, descricao, acao_esperada, icone_fa) VALUES (?, ?, ?, ?, ?)");
@@ -87,7 +107,7 @@ try {
         $stmtTemplate->execute([
             'Atualização de Panorama C2', 
             'C2', 
-            'Detectada movimentação. Atualizar a Carta de Meios e lançar evoluções no Pacificador.', 
+            'Detectada movimentação. Atualizar a Carta de Meios e lançar evoluções no C2 Cmb.', 
             'Acessar C2 Cmb via IP, lançar calunga/evolução no mapa.', 
             'fa-laptop-code'
         ]);
@@ -101,6 +121,15 @@ try {
             'fa-kit-medical'
         ]);
 
+        // Saúde
+        $stmtTemplate->execute([
+            'Abordagem a Veículo Suspeito em Posto de Bloqueio', 
+            'GLO', 
+            'Automóvel se aproxima do Posto de Bloqueio e Controle de Vias Urbanas sem sinalizar.', 
+            'Instalar bloqueio, fiscalizar documentos e inspecionar veículos no PBCVU.', 
+            'fa-car-side'
+        ]);
+
         // Manutenção
         $stmtTemplate->execute([
             'Pane na Viatura', 
@@ -110,7 +139,7 @@ try {
             'fa-wrench'
         ]);
 
-        $mensagemSistema = "<div class='success'>✅ Banco de dados modular criado e populado com Cenários, Locais e Templates com sucesso!</div>";
+        $mensagemSistema = "<div class='success'>✅ Banco de dados modular criado e populado com Cenários, Locais, Categorias e Templates com sucesso!</div>";
     } else {
         $mensagemSistema = "<div class='info'>ℹ️ O arquivo banco.db já existe. Apague-o se desejar recriar a estrutura do zero.</div>";
     }
@@ -143,7 +172,7 @@ try {
 
             <div class="details">
                 <p><strong>Arquivo gerado em:</strong> <?php echo $arquivoBanco; ?></p>
-                <p><strong>Tabelas criadas:</strong> cenarios, locais, templates_incidentes, incidentes_disparados.</p>
+                <p><strong>Tabelas criadas:</strong> cenarios, locais, categorias, local_geradores, templates_incidentes, incidentes_disparados.</p>
             </div>
 
             <a href="index.php" class="btn">Ir para o Painel do Instrutor (index.php) ➔</a>
