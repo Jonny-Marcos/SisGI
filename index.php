@@ -387,7 +387,7 @@ endif;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SisGI - Sistema de Gerenciamento de Incidentes</title>
+    <title>SisGI - Sistema de Geração de Incidentes</title>
     <script src="assets/tailwind.js"></script>
     <link rel="stylesheet" href="assets/all.min.css">
     <script src="assets/chartjs.js"></script>
