@@ -1,0 +1,11 @@
+# Bloqueia o acesso direto ao banco de dados SQLite
+<Files "banco.db">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Opcional: Bloqueia qualquer arquivo com extensão .db ou .sqlite
+<FilesMatch "\.(db|sqlite|sqlite3)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
